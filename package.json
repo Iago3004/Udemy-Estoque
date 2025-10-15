@@ -1,0 +1,33 @@
+{
+  "name": "udemy-estoque",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iago3004/Udemy-Estoque.git"
+  },
+  "keywords": [
+    "estoque;",
+    "saas",
+    "inventory"
+  ],
+  "author": "Iago Vicente",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Iago3004/Udemy-Estoque/issues"
+  },
+  "homepage": "https://github.com/Iago3004/Udemy-Estoque#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "jest": "^30.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.1",
+    "sequelize": "^6.37.7"
+  }
+}
