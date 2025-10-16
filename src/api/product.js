@@ -1,10 +1,13 @@
+const { or } = require("sequelize")
+const serviceProduct = require("../service/product")
+
 class ApiProduct {
 
     async FindById(req, res) {
         try{
             const { id } = req.params
             const organizationId = 1
-            const product = {id} // await service.findById(product)
+            const product = await serviceProduct.FindById(organizationId, id)
 
             res.status(200).send({product})
         } catch(error){
@@ -18,7 +21,7 @@ class ApiProduct {
     async findAll(req, res) {
         try{
             const organizationId = 1
-            const products= [{organizationId}] // await service.findById(product)
+            const products= await serviceProduct.findAll(organizationId)
 
             res.status(200).send({products})
         } catch(error){
@@ -32,8 +35,8 @@ class ApiProduct {
     async Create(req, res) {
         try{
             const organizationId = 1
-            const { name, description } = req.params
-            const product = {} // await service.findById(product)
+            const { name, description } = req.body
+            const product = await serviceProduct.Create(organizationId, name, description)
 
             res.status(200).send({product})
         } catch(error){
@@ -47,8 +50,9 @@ class ApiProduct {
     async Update(req, res) {
         try{
             const organizationId = 1
-            const { id, name, description } = req.params
-            const product = {} // await service.findById(product)
+            const { id} = req.params
+            const {name, description } = req.body
+            const product = await serviceProduct.Update(organizationId, id, name, description)
 
             res.status(200).send({product})
         } catch(error){
@@ -63,7 +67,7 @@ class ApiProduct {
         try{
             const organizationId = 1
             const { id } = req.params
-            const product = {} // await service.findById(product)
+            const product = await serviceProduct.Delete(organizationId, id)
 
             res.status(200).send({product})
         } catch(error){

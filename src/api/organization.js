@@ -1,83 +1,51 @@
-const ServiceOrganization = require("../service/organization");
-
-
-
-
+const serviceOrganization = require("../service/organization")
 
 class ApiOrganization {
 
-   async FindById(req, res) {
-  try {
-    const { id } = req.params;
-    const organization = await ServiceOrganization.findByPk(id);
+    async FindById(req, res) {
+        try {
+            const { id } = req.params
+            const organization = await serviceOrganization.FindById(id)
 
-    if (!organization) {
-      return res.status(404).send({ msg: "Organização não encontrada" });
+            res.status(200).send({ organization })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
+        }
     }
 
-    res.status(200).send({ organization });
-  } catch (error) {
-    res.status(500).send({ msg: error.message });
-  }
-}
+    async Create(req, res) {
+        try {
+            const { name, address, phone, email } = req.body
+            const organization = await serviceOrganization.Create(name, address, phone, email)
 
-
-   async Create(req, res) {
-  try {
-    const { name, address, phone, email } = req.body;
-
-    const organization = await ServiceOrganization.create({
-      name,
-      address,
-      phone,
-      email
-    });
-
-    res.status(200).send({ organization });
-  } catch (error) {
-    res.status(500).send({ msg: error.message });
-  }
-}
-
+            res.status(200).send({ organization })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
+        }
+    }
+    
     async Update(req, res) {
-  try {
-    const { id } = req.params;
-    const { name, address, phone, email } = req.body;
+        try {
+            const { id } = req.params
+            const { name, address, phone, email } = req.body
+            const organization = await serviceOrganization.Update(id, name, address, phone, email)
 
-    const [updated] = await ServiceOrganization.update(
-      { name, address, phone, email },
-      { where: { id } }
-    );
-
-    if (updated) {
-      const updatedOrganization = await ServiceOrganization.findByPk(id);
-      res.status(200).send({ updatedOrganization });
-    } else {
-      res.status(404).send({ msg: "Organização não encontrada" });
+            res.status(200).send({ organization })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
+        }
     }
-  } catch (error) {
-    res.status(500).send({ msg: error.message });
-  }
-}
-
-
+    
     async Delete(req, res) {
-  try {
-    const { id } = req.params;
+        try {
+            const { id } = req.params
+            const organization = await serviceOrganization.Delete(id)
 
-    const deleted = await ServiceOrganization.destroy({ where: { id } });
-
-    if (deleted) {
-      res.status(200).send({ msg: "Organização excluída com sucesso" });
-    } else {
-      res.status(404).send({ msg: "Organização não encontrada" });
+            res.status(200).send({ organization })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
+        }
     }
-  } catch (error) {
-    res.status(500).send({ msg: error.message });
-  }
 }
 
-
-}
-
-module.exports = new ApiOrganization();
+module.exports = new ApiOrganization()
