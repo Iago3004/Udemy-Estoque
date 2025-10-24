@@ -1,43 +1,46 @@
 const database = require('../database')
-const Organization = require('./organization')
+const Organizition = require('./organization')
 
 class User {
     constructor() {
-        this.model = database.db.define('users', {
+        this.model = database.db.define("users", {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
             name: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             email: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false,
                 unique: true
             },
             password: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             role: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             organizationId: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 references: {
-                    model: Organization,
-                    key: 'id'
+                    model: Organizition,
+                    key: "id"
                 }
-            }
+            },
         })
 
-        // Define o relacionamento
-        this.model.belongsTo(Organization, { foreignKey: 'organizationId' })
-        Organization.hasMany(this.model, { foreignKey: 'organizationId' })
+        this.model.belongsTo(Organizition, {
+            foreignKey: 'organizationId'
+        })
+        Organizition.hasMany(this.model, {
+            foreignKey: 'organizationId'
+        })
     }
 }
 

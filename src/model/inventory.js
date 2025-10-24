@@ -3,28 +3,28 @@ const Organization = require('./organization')
 
 class Inventory {
     constructor() {
-        this.model = database.db.define('invetories', {
+        this.model = database.db.define("inventories", {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
-             name: {
-                type: database.Sequelize.STRING,
+            name: {
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             organizationId: {
-                type: database.Sequelize.INTEGER,
-                references:{
+                type: database.db.Sequelize.INTEGER,
+                references: {
                     model: Organization,
-                    key: 'id'
+                    key: "id"
                 }
-            },          
+            },
         })
 
-        this.model.belongsTo(Organization, { 
+        this.model.belongsTo(Organization, {
             foreignKey: 'organizationId'
-        });
+        })
         Organization.hasMany(this.model, {
             foreignKey: 'organizationId'
         })

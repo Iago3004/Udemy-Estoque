@@ -1,11 +1,13 @@
-const express = require('express');
-const productRouter = express.Router();
+const express = require('express')
 const ApiProduct = require('../api/product');
+const authMiddleware = require('../middleware/auth');
 
-productRouter.get('/', ApiProduct.findAll)
-productRouter.get('/:id', ApiProduct.FindById)
-productRouter.post('/', ApiProduct.Create)
-productRouter.put('/:id', ApiProduct.Update)
-productRouter.delete('/:id', ApiProduct.Delete)
+const productRouter = express.Router();
 
-module.exports = productRouter;
+productRouter.get('/', authMiddleware(), ApiProduct.FindAll)
+productRouter.get('/:id', authMiddleware(), ApiProduct.FindById)
+productRouter.post('/', authMiddleware(), ApiProduct.Create)
+productRouter.put('/:id', authMiddleware(), ApiProduct.Update)
+productRouter.delete('/:id', authMiddleware(), ApiProduct.Delete)
+
+module.exports = productRouter

@@ -1,56 +1,72 @@
-const modelIventory = require('../model/inventory')
+const getProductMovements = require("../fns/get-product-movements")
+const modelInventory = require("../model/inventory")
+const inventoryMovement = require("./inventoryMovement")
 
 class ServiceInventory {
-  async FindById(organizationId, id, transaction){
-        return modelIventory.findOne(
+    async FindById(organizationId, id, transaction){
+        const inventory = await modelInventory.findOne(
             { where: { organizationId, id }},
             { transaction }
         )
+
+        if(!inventory) {
+            throw new Error("Estoque não encontrado")
+        }
+
+        const movements = await inventoryMovement.FindAll(inventory.id)
+
+        const result = getProductMovements(movements)
+
+        return { ...inventory.dataValues, ...result }
     }
 
-
     async FindAll(organizationId, transaction){
-        return modelIventory.findAll(
+        return modelInventory.findAll(
             { where: { organizationId }},
             { transaction }
         )
     }
 
+    async Create(organizationId, name, transaction){
+        if(!organizationId) {
+            throw new Error('Favor informar o campo organizationId')
+        } else if(!name) {
+            throw new Error('Favor informar o campo nome')
+        }
 
-  async Create(organizationId, name, transaction){
-    if(!organizationId){
-      throw new Error('Favor informar o cmapo organizationId')
-    } else if(!name){
-      throw new Error('Favor informar o cmapo name')
+        return modelInventory.create(
+            { organizationId, name },
+            { transaction }
+        )
     }
 
-    return modelIventory.create(
-      { organizationId, name },
-      { transaction }
-    )
-  }
+    async Update(organizationId, id, name, transaction){
+        const oldInventory = await modelInventory.findOne(
+            { where: { organizationId, id }},
+            { transaction }
+        )
 
+        if(!oldInventory) {
+            throw new Error("Estoque não foi encontrado")
+        }
+        oldInventory.name = name || oldInventory.name
 
-  async Update(organization, id, name, transaction){
-    const oldIventory = await this.FindById(organization, id)
-    if(!oldIventory){
-      throw new Error('Estoque não encontrado')
-    }
-    oldIventory.name = name || oldIventory.name
-
-    return oldIventory.save({ transaction })
-  }
-
-
-  async Delete(organization, id, transaction){
-    const oldIventory = await this.FindById(organization, id)
-    if(!oldIventory){
-      throw new Error('Estoque não encontrado')
+        return oldInventory.save({ transaction })
     }
 
-    await oldIventory.destroy({ transaction })
-  }
-    
-  }
+    async Delete(organizationId, id, transaction){
+        const oldInventory = await modelInventory.findOne(
+            { where: { organizationId, id }},
+            { transaction }
+        )
+
+        if(!oldInventory) {
+            throw new Error("Estoque não foi encontrado")
+        }
+
+        await oldInventory.destroy({ transaction })
+    }
+
+}
 
 module.exports = new ServiceInventory()

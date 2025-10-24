@@ -1,11 +1,13 @@
-const express = require('express');
-const inventoryRouter = express.Router();
+const express = require('express')
 const ApiInventory = require('../api/inventory');
+const authMiddleware = require('../middleware/auth');
 
-inventoryRouter.get('/', ApiInventory.findAll)
-inventoryRouter.get('/:id', ApiInventory.FindById)
-inventoryRouter.post('/', ApiInventory.Create)
-inventoryRouter.put('/:id', ApiInventory.Update)
-inventoryRouter.delete('/:id', ApiInventory.Delete)
+const inventoryRouter = express.Router();
 
-module.exports = inventoryRouter;
+inventoryRouter.get('/', authMiddleware(), ApiInventory.FindAll)
+inventoryRouter.get('/:id', authMiddleware(), ApiInventory.FindById)
+inventoryRouter.post('/', authMiddleware(), ApiInventory.Create)
+inventoryRouter.put('/:id', authMiddleware(), ApiInventory.Update)
+inventoryRouter.delete('/:id', authMiddleware(), ApiInventory.Delete)
+
+module.exports = inventoryRouter

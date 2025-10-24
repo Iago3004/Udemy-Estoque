@@ -1,13 +1,19 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize")
 
 class Database {
-  constructor() {
-    this.Sequelize = Sequelize;
-    this.db = new Sequelize('udemy-inventory', 'root', '', {
-      host: 'localhost',
-      dialect: 'mysql',
-    });
-  }
+    constructor() {
+        this.init()
+    }
+
+    init() {
+        this.db = new Sequelize({
+            database: "udemy-inventory",
+            host: "localhost",
+            username: "root",
+            dialect: "mysql",
+            password: ""
+        })
+    }
 }
 
-module.exports = new Database();
+module.exports = new Database()

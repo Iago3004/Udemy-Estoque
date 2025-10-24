@@ -1,67 +1,66 @@
-const database = require('../database');
-const Inventory = require('./inventory');
-const Product = require('./product');
-const User = require('./user');
+const database = require('../database')
+const Inventory = require('./inventory')
+const Product = require('./product')
+const User = require('./user')
 
 class InventoryMovement {
     constructor() {
-        this.model = database.db.define('inventory_movement', {
+        this.model = database.db.define("inventory_movements", {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
-            type:{
-                type: database.Sequelize.STRING,
+            type: {
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
-            amount:{
-                type: database.Sequelize.INTEGER,
+            amount: {
+                type: database.db.Sequelize.INTEGER,
                 allowNull: false,
             },
             userId: {
-                type: database.Sequelize.INTEGER,
-                    references:{
-                        model: User,
-                        key: 'id'
-                    }
-                },
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: User,
+                    key: "id"
+                }
+            },
             productId: {
-                type: database.Sequelize.INTEGER,
-                    references:{
-                        model: Product,
-                        key: 'id'
-                    }
-                },
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: Product,
+                    key: "id"
+                }
+            },
             inventoryId: {
-                type: database.Sequelize.INTEGER,
-                    references:{
-                        model: Inventory,
-                        key: 'id'
-                    }
-                },           
-            })
-                      
-            
-            this.model.belongsTo(User, { 
-                foreignKey: 'usarId'
-            });
-             this.model.belongsTo(Product, { 
-                foreignKey: 'productId'
-            });
-             this.model.belongsTo(Inventory, { 
-                foreignKey: 'inventoryId'
-            });
-            User.hasMany(this.model, {
-                foreignKey: 'usarId'
-            })
-            Product.hasMany(this.model, {
-                foreignKey: 'productId'
-            })
-            Inventory.hasMany(this.model, {
-                foreignKey: 'inventoryId'
-            })
-        }
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: Inventory,
+                    key: "id"
+                }
+            },
+        })
+
+        this.model.belongsTo(User, {
+            foreignKey: 'userId'
+        })
+        this.model.belongsTo(Product, {
+            foreignKey: 'productId'
+        })
+        this.model.belongsTo(Inventory, {
+            foreignKey: 'inventoryId'
+        })
+        User.hasMany(this.model, {
+            foreignKey: 'userId'
+        })
+        Product.hasMany(this.model, {
+            foreignKey: 'productId'
+        })
+        Inventory.hasMany(this.model, {
+            foreignKey: 'inventoryId'
+        })
     }
-        
+}
+
 module.exports = new InventoryMovement().model

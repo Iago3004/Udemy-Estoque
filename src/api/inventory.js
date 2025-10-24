@@ -1,81 +1,66 @@
-const ServiceInventory = require('../service/inventory')
+const serviceInventory = require("../service/inventory")
 
 class ApiInventory {
 
     async FindById(req, res) {
-        try{
-            const organizationId = 1
+        try {
+            const organizationId = req.session.organizationId
             const { id } = req.params
-            const inventory = await ServiceInventory.FindById(organizationId, id)
+            const inventory = await serviceInventory.FindById(organizationId, id)
 
-            res.status(200).send({inventory})
-        } catch(error){
-            res.status(500).send({msg: error.message})
-
+            res.status(200).send({ inventory })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
         }
-        
-
     }
+    
+    async FindAll(req, res) {
+        try {
+            const organizationId = req.session.organizationId
+            const inventories = await serviceInventory.FindAll(organizationId)
 
-    async findAll(req, res) {
-        try{
-            const organizationId = 1
-            const inventories= await ServiceInventory.findAll(organizationId)
-
-            res.status(200).send({inventories})
-        } catch(error){
-            res.status(500).send({msg: error.message})
-
+            res.status(200).send({ inventories })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
         }
-        
-
     }
 
     async Create(req, res) {
-        try{
-            const organizationId = 1
+        try {
+            const organizationId = req.session.organizationId
             const { name } = req.body
-            const inventory = await ServiceInventory.Create(organizationId, name) 
+            const inventory = await serviceInventory.Create(organizationId, name)
 
-            res.status(200).send({inventory})
-        } catch(error){
-            res.status(500).send({msg: error.message})
-
+            res.status(200).send({ inventory })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
         }
-        
-
     }
-
+    
     async Update(req, res) {
-        try{
-            const organizationId = 1
+        try {
+            const organizationId = req.session.organizationId
             const { id } = req.params
             const { name } = req.body
-            const inventory = await ServiceInventory.Update(organizationId, id, name)
+            const inventory = await serviceInventory.Update(organizationId, id, name)
 
-            res.status(200).send({inventory})
-        } catch(error){
-            res.status(500).send({msg: error.message})
-
+            res.status(200).send({ inventory })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
         }
-        
-
     }
-
+    
     async Delete(req, res) {
-        try{
-            const organizationId = 1
+        try {
+            const organizationId = req.session.organizationId
             const { id } = req.params
-            const inventory = await ServiceInventory.Delete(organizationId, id)
-            res.status(200).send({inventory})
-        } catch(error){
-            res.status(500).send({msg: error.message})
+            const inventory = await serviceInventory.Delete(organizationId, id)
 
+            res.status(200).send({ inventory })
+        } catch (error) {
+            res.status(500).send({ msg: error.message })
         }
-        
-
     }
-
 }
 
-module.exports = new ApiInventory();
+module.exports = new ApiInventory()

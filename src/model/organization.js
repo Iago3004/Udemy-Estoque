@@ -1,27 +1,27 @@
-const database = require('../database');
+const database = require('../database')
 
 class Organization {
     constructor() {
-        this.model = database.db.define('organization', {
+        this.model = database.db.define("organizations", {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
             name: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             address: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
             phone: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: true
             },
             email: {
-                type: database.Sequelize.STRING,
+                type: database.db.Sequelize.STRING,
                 allowNull: false,
                 unique: true
             },
@@ -29,5 +29,4 @@ class Organization {
     }
 }
 
-module.exports = new Organization().model;
-
+module.exports = new Organization().model

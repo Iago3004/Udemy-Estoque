@@ -33,8 +33,6 @@ class ServiceOrganization {
             transaction
         )
 
-        console.log('ORGANIZATION:', organization.dataValues)
-
         return { organization, user: { ...user.dataValues, password } }
     }
 

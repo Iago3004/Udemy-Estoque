@@ -3,38 +3,36 @@ const Organization = require('./organization')
 
 class Product {
     constructor() {
-        this.model = database.db.define('products', {
+        this.model = database.db.define("products", {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
-            name:{
-                type: database.Sequelize.STRING,
+            name: {
+                type: database.db.Sequelize.STRING,
                 allowNull: false
             },
-            description:{
-                type: database.Sequelize.STRING,
-                allowNull: false,
-                unique: true
+            description: {
+                type: database.db.Sequelize.STRING,
+                allowNull: false
             },
             organizationId: {
-                type: database.Sequelize.INTEGER,
-                    references:{
-                        model: Organization,
-                        key: 'id'
-                    }
-                },          
-            })
-                      
-            
-            this.model.belongsTo(Organization, { 
-                        foreignKey: 'organizationId'
-                });
-                Organization.hasMany(this.model, {
-                    foreignKey: 'organizationId'
-                })
-        }
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: Organization,
+                    key: "id"
+                }
+            },
+        })
+
+        this.model.belongsTo(Organization, {
+            foreignKey: 'organizationId'
+        })
+        Organization.hasMany(this.model, {
+            foreignKey: 'organizationId'
+        })
     }
-        
+}
+
 module.exports = new Product().model

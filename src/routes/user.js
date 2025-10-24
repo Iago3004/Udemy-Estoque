@@ -1,17 +1,20 @@
-const express = require('express');
-const userRouter = express.Router();
+const express = require('express')
 const ApiUser = require('../api/user');
+const authMiddleware = require('../middleware/auth');
 
-// Rotas do usuário comum
-userRouter.get('/info', ApiUser.FindById.bind(ApiUser));
-userRouter.put('/', ApiUser.Update.bind(ApiUser));
-userRouter.delete('/', ApiUser.Delete.bind(ApiUser));
+const userRouter = express.Router();
 
-// Rotas do admin
-userRouter.post('/', ApiUser.Create.bind(ApiUser));
-userRouter.get('/', ApiUser.FindAll.bind(ApiUser));
-userRouter.get('/:id', ApiUser.FindById.bind(ApiUser));
-userRouter.put('/:id', ApiUser.Update.bind(ApiUser));
-userRouter.delete('/:id', ApiUser.Delete.bind(ApiUser));
+// opções do usuario por si só
+userRouter.get('/info', authMiddleware(), ApiUser.FindById)
+userRouter.put('/', authMiddleware(), ApiUser.Update)
+userRouter.delete('/', authMiddleware(), ApiUser.Delete)
 
-module.exports = userRouter;
+// opções do admin
+userRouter.post('/', authMiddleware('admin'), ApiUser.Create)
+userRouter.get('/', authMiddleware('admin'), ApiUser.FindAll)
+userRouter.get('/:id', authMiddleware('admin'), ApiUser.FindById)
+userRouter.put('/:id', authMiddleware('admin'), ApiUser.Update)
+userRouter.delete('/:id', authMiddleware('admin'), ApiUser.Delete)
+
+
+module.exports = userRouter
